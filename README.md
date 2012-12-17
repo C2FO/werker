@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 
-[![Build Status](https://travis-ci.org/C2FO/werker.png?branch=master)](https://travis-ci.org/C2FO/werker)
+  [![Build Status](https://travis-ci.org/C2FO/werker.png?branch=master)](https://travis-ci.org/C2FO/werker)
 
 #Werker
 
@@ -9,7 +9,9 @@
 
 `werker` is useful if you have CPU intensive tasks that block your node process from doing handling other tasks you can easily push it off to a worker process and let `werker` manage it.
 
-[Here](http://screenr.com/mkM7) is a brief screen cast showing `werker` managing a pool of processes.
+Here is a brief screen cast showing `werker` managing a pool of processes.
+
+<iframe src="http://www.screenr.com/embed/mkM7" width="650" height="396" frameborder="0"></iframe>
 
 Notice how once the request stop `werker` automatically cleans up processes. The code for the screen cast is in the examples directory and at the bottom of this page.
 
@@ -45,7 +47,7 @@ Ok that is the base for all `worker`s in worker, but right now it doesnt do anyt
 
 ```
 worker.method("sayHello", function () {
-return "Hello World!";
+	return "Hello World!";
 });
 ```
 
@@ -55,9 +57,9 @@ Well thats great but my code is async! Well we have a solution for that also!
 
 ```
 worker.method("sayHelloAsync", function (cb) {
-process.nextTick(function(){
-	cb(null, "Hello World!");
-});
+	process.nextTick(function(){
+		cb(null, "Hello World!");
+	});
 }, true);
 ```
 
@@ -69,13 +71,13 @@ You can also specify a group of methods when creating your worker.
 
 ```
 worker.methods({
-sayHello : function sayHello(){
-	return "Hello World!";
-},
+	sayHello : function sayHello(){
+		return "Hello World!";
+	},
 
-add : function add(one, two){
-	return one + two;
-}
+	add : function add(one, two){
+		return one + two;
+	}
 };)
 ```
 
@@ -85,17 +87,17 @@ You can also pass in true as the last argument to make the group of methods asyn
 
 ```
 worker.methods({
-sayHelloAsync : function sayHello(cb){
-	process.nextTick(function(){
-		cb(null, "Hello World!");
-	});
-},
+	sayHelloAsync : function sayHello(cb){
+		process.nextTick(function(){
+			cb(null, "Hello World!");
+		});
+	},
 
-addAsync : function add(one, two, cb){
-	process.nextTick(function(){
-		cb(null, one + two);
-	});
-}
+	addAsync : function add(one, two, cb){
+		process.nextTick(function(){
+			cb(null, one + two);
+		});
+	}
 }, true);
 
 ```
@@ -106,7 +108,7 @@ Well I just want a default handler similar to `process.on("message")` ok to do t
 
 ```
 worker.handler(function(message){
-//do something with your message
+	//do something with your message
 });
 
 ```
@@ -115,7 +117,7 @@ Or alternatively the async version.
 
 ```
 worker.handler(function(message, done){
-//do something with your message
+	//do something with your message
 }, true);
 
 ```
@@ -128,7 +130,7 @@ If you have logic that you need to run before your worker is stopped either by t
 
 ```
 worker.tearDown(function(){
-console.log("tear down");
+	console.log("tear down");
 });
 ```
 
@@ -153,20 +155,20 @@ var werker = require("werker");
 
 
 module.exports = werker.worker()
-   .method("sayHello", function () {
-       return "Hello World!";
-   })
-   .method("add", function (one, two) {
-       return one + two;
-   })
-   .method("asyncAdd",function (one, two, done) {
-       process.nextTick(function () {
-           done(null, one + two);
-       });
-   }, true)
-   .tearDown(function(){
-       console.log("tear down");
-   }).start();
+    .method("sayHello", function () {
+        return "Hello World!";
+    })
+    .method("add", function (one, two) {
+        return one + two;
+    })
+    .method("asyncAdd",function (one, two, done) {
+        process.nextTick(function () {
+            done(null, one + two);
+        });
+    }, true)
+    .tearDown(function(){
+        console.log("tear down");
+    }).start();
 
 ```
 
@@ -228,13 +230,13 @@ This is where `werker` is different just managing your worker processes manually
 var myWorker = werkers.worker();
 
 myWorker.sayHello(function(err, response){
-console.log(response);
+	console.log(response);
 });
 
 Or use the promise API
 
 myWorker.sayHello().then(function(response){
-console.log(repsonse);
+	console.log(repsonse);
 });
 
 ```
@@ -253,12 +255,12 @@ The worker
 var werker = require("werker");
 
 function fibonacci(n) {
-   return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 module.exports = werker.worker()
-   .method("fibonacci", fibonacci)
-   .start();
+    .method("fibonacci", fibonacci)
+    .start();
 
 ```
 
@@ -266,24 +268,24 @@ The server.
 
 ```
 var http = require("http"),
-   werker = require("werker"),
-   url = require('url');
+    werker = require("werker"),
+    url = require('url');
 
 var pool = werker.pool(__dirname + "/fibonacciWorker.js").max(5).ttl(5000);
 
 http.createServer(function (req, res) {
-   var query = url.parse(req.url, true).query;
-   var num = query.number || 40;
-   pool.worker().fibonacci(num, function (err, fib) {
-       if (err) {
-           console.error(err.stack);
-           res.writeHead(500, {'Content-Type': 'text/plain'});
-           res.end(err.stack || err);
-       } else {
-           res.writeHead(200, {'Content-Type': 'text/plain'});
-           res.end(fib + "");
-       }
-   });
+    var query = url.parse(req.url, true).query;
+    var num = query.number || 40;
+    pool.worker().fibonacci(num, function (err, fib) {
+        if (err) {
+            console.error(err.stack);
+            res.writeHead(500, {'Content-Type': 'text/plain'});
+            res.end(err.stack || err);
+        } else {
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.end(fib + "");
+        }
+    });
 
 }).listen(3000, "127.0.0.1");
 ```
