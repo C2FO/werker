@@ -9,9 +9,7 @@
 
 `werker` is useful if you have CPU intensive tasks that block your node process from doing handling other tasks you can easily push it off to a worker process and let `werker` manage it.
 
-Here is a brief screen cast showing `werker` managing a pool of processes.
-
-<iframe src="http://www.screenr.com/embed/mkM7" width="650" height="396" frameborder="0"></iframe>
+[Here](http://screenr.com/mkM7) is a brief screen cast showing `werker` managing a pool of processes.
 
 Notice how once the request stop `werker` automatically cleans up processes. The code for the screen cast is in the examples directory and at the bottom of this page.
 
