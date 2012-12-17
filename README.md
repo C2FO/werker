@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 
-  [![build status](https://secure.travis-ci.org/C2FO/werker.png)](http://travis-ci.org/C2FO/werker)
+[![Build Status](https://travis-ci.org/C2FO/werker.png?branch=master)](https://travis-ci.org/C2FO/werker)
 
 #Werker
 
