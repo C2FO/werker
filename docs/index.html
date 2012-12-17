@@ -213,7 +213,7 @@ module.exports = worker;</code></pre>
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.method(&quot;sayHello&quot;, function () {
-return &quot;Hello World!&quot;;
+    return &quot;Hello World!&quot;;
 });</code></pre>
 <p>So in the above scode snippet we added a <code>method</code> to our worker which says whenever the parent process invokes the <code>sayHello</code> method run this function.
 
@@ -222,9 +222,9 @@ return &quot;Hello World!&quot;;
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.method(&quot;sayHelloAsync&quot;, function (cb) {
-process.nextTick(function(){
-    cb(null, &quot;Hello World!&quot;);
-});
+    process.nextTick(function(){
+        cb(null, &quot;Hello World!&quot;);
+    });
 }, true);</code></pre>
 <p>Ok so notice how we passed in true as the last argument to the <code>method</code> method so now a <code>cb</code> is passed in which you call when all processing is done.
 
@@ -236,13 +236,13 @@ process.nextTick(function(){
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.methods({
-sayHello : function sayHello(){
-    return &quot;Hello World!&quot;;
-},
+    sayHello : function sayHello(){
+        return &quot;Hello World!&quot;;
+    },
 
-add : function add(one, two){
-    return one + two;
-}
+    add : function add(one, two){
+        return one + two;
+    }
 };)</code></pre>
 <p>So in the above snippet we define two methods <code>sayHello</code> and <code>add</code>.
 
@@ -251,17 +251,17 @@ add : function add(one, two){
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.methods({
-sayHelloAsync : function sayHello(cb){
-    process.nextTick(function(){
-        cb(null, &quot;Hello World!&quot;);
-    });
-},
+    sayHelloAsync : function sayHello(cb){
+        process.nextTick(function(){
+            cb(null, &quot;Hello World!&quot;);
+        });
+    },
 
-addAsync : function add(one, two, cb){
-    process.nextTick(function(){
-        cb(null, one + two);
-    });
-}
+    addAsync : function add(one, two, cb){
+        process.nextTick(function(){
+            cb(null, one + two);
+        });
+    }
 }, true);</code></pre>
 <p><strong><code>worker.handler(fn, async?)</code></strong>
 
@@ -270,13 +270,13 @@ addAsync : function add(one, two, cb){
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.handler(function(message){
-//do something with your message
+    //do something with your message
 });</code></pre>
 <p>Or alternatively the async version.
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.handler(function(message, done){
-//do something with your message
+    //do something with your message
 }, true);</code></pre>
 <p>In the above snippets message will be whatever arguments that are passed into the handler, which we will see in the pool.
 
@@ -288,7 +288,7 @@ addAsync : function add(one, two, cb){
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>worker.tearDown(function(){
-console.log(&quot;tear down&quot;);
+    console.log(&quot;tear down&quot;);
 });</code></pre>
 <p><strong><code>worker.start()</code></strong>
 
@@ -308,20 +308,20 @@ console.log(&quot;tear down&quot;);
 
 
 module.exports = werker.worker()
-   .method(&quot;sayHello&quot;, function () {
-       return &quot;Hello World!&quot;;
-   })
-   .method(&quot;add&quot;, function (one, two) {
-       return one + two;
-   })
-   .method(&quot;asyncAdd&quot;,function (one, two, done) {
-       process.nextTick(function () {
-           done(null, one + two);
-       });
-   }, true)
-   .tearDown(function(){
-       console.log(&quot;tear down&quot;);
-   }).start();</code></pre>
+    .method(&quot;sayHello&quot;, function () {
+        return &quot;Hello World!&quot;;
+    })
+    .method(&quot;add&quot;, function (one, two) {
+        return one + two;
+    })
+    .method(&quot;asyncAdd&quot;,function (one, two, done) {
+        process.nextTick(function () {
+            done(null, one + two);
+        });
+    }, true)
+    .tearDown(function(){
+        console.log(&quot;tear down&quot;);
+    }).start();</code></pre>
 <h3>Creating a Pool</h3>
 <p>Ok so we have created a worker so lets create a pool to use our worker with.
 
@@ -380,13 +380,13 @@ var werkers = werker.pool(__dirname + &quot;/myWorker.js&quot;);</code></pre>
 var myWorker = werkers.worker();
 
 myWorker.sayHello(function(err, response){
-console.log(response);
+    console.log(response);
 });
 
 Or use the promise API
 
 myWorker.sayHello().then(function(response){
-console.log(repsonse);
+    console.log(repsonse);
 });</code></pre>
 <p><strong>Notice</strong> how the <code>sayHello</code> method that we defined in the worker is avaiable to use. All actions defined with the <code>werker</code> API are automatically added to the <code>worker</code> that you get from the pool.
 
@@ -403,34 +403,34 @@ console.log(repsonse);
 <pre class='prettyprint linenums lang-js'><code>var werker = require(&quot;werker&quot;);
 
 function fibonacci(n) {
-   return n &lt; 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    return n &lt; 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 module.exports = werker.worker()
-   .method(&quot;fibonacci&quot;, fibonacci)
-   .start();</code></pre>
+    .method(&quot;fibonacci&quot;, fibonacci)
+    .start();</code></pre>
 <p>The server.
 
 </p>
 <pre class='prettyprint linenums lang-js'><code>var http = require(&quot;http&quot;),
-   werker = require(&quot;werker&quot;),
-   url = require(&#39;url&#39;);
+    werker = require(&quot;werker&quot;),
+    url = require(&#39;url&#39;);
 
 var pool = werker.pool(__dirname + &quot;/fibonacciWorker.js&quot;).max(5).ttl(5000);
 
 http.createServer(function (req, res) {
-   var query = url.parse(req.url, true).query;
-   var num = query.number || 40;
-   pool.worker().fibonacci(num, function (err, fib) {
-       if (err) {
-           console.error(err.stack);
-           res.writeHead(500, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
-           res.end(err.stack || err);
-       } else {
-           res.writeHead(200, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
-           res.end(fib + &quot;&quot;);
-       }
-   });
+    var query = url.parse(req.url, true).query;
+    var num = query.number || 40;
+    pool.worker().fibonacci(num, function (err, fib) {
+        if (err) {
+            console.error(err.stack);
+            res.writeHead(500, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
+            res.end(err.stack || err);
+        } else {
+            res.writeHead(200, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
+            res.end(fib + &quot;&quot;);
+        }
+    });
 
 }).listen(3000, &quot;127.0.0.1&quot;);</code></pre>
 <p>The video at the top is a demonstration of this sample code.</p>
