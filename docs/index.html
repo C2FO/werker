@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>werker</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.css">
+    <link rel="stylesheet" href="./assets/css/prettify.css">
+    <style type="text/css">
+        
+
+/*.subnav-inner {*/
+    /*width: 100%;*/
+    /*height: 36px;*/
+    /*background-color: #EEE;*/
+    /*background-repeat: repeat-x;*/
+    /*background-image: -moz-linear-gradient(top, whiteSmoke 0%, #EEE 100%);*/
+    /*background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, whiteSmoke), color-stop(100%, #EEE));*/
+    /*background-image: -webkit-linear-gradient(top, whiteSmoke 0%, #EEE 100%);*/
+    /*background-image: -ms-linear-gradient(top, whiteSmoke 0%, #EEE 100%);*/
+    /*background-image: -o-linear-gradient(top, whiteSmoke 0%, #EEE 100%);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f5f5f5', endColorstr = '#eeeeee', GradientType = 0);*/
+    /*background-image: linear-gradient(top, whiteSmoke 0%, #EEE 100%);*/
+    /*-webkit-border-radius: 4px;*/
+    /*-moz-border-radius: 4px;*/
+    /*border-radius: 4px;*/
+/*}*/
+
+/*.subnav .nav > li > a:hover {*/
+    /*color: black !important;*/
+/*}*/
+
+/*.subnav .nav li.dropdown .dropdown-toggle .caret,*/
+/*.subnav .nav li.dropdown.open .caret {*/
+    /*border-top-color: #999 !important;*/
+    /*border-bottom-color: #999 !important;*/
+/*}*/
+
+/*.subnav-fixed {*/
+    /*position: fixed;*/
+    /*width : 90%;*/
+    /*margin-right: auto;*/
+    /*margin-left: auto;*/
+    /*top: 40px;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*z-index: 1020;*/
+    /*border-color: #D5D5D5;*/
+    /*border-width: 0 0 1px;*/
+    /*-webkit-border-radius: 0;*/
+    /*-moz-border-radius: 0;*/
+    /*border-radius: 0;*/
+    /*-webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);*/
+    /*-moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);*/
+    /*box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);*/
+/*}*/
+
+/*.navbar .nav  .dropdown-menu {*/
+    /*max-height: 500px;*/
+    /*overflow: auto;*/
+/*}​*/
+
+    </style>
+    <style type="text/css">
+        body {
+            padding: 90px;
+        }
+
+        .subnav{
+            margin-top: 40px;
+            margin-right: auto;
+            margin-left: auto;
+            z-index: 1000;
+        }
+
+        @media (max-width:979px) {
+            .subnav{
+                margin-top: auto;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="./assets/css/bootstrap-responsive.css">
+    <script type="text/javascript">
+        var init = (function () {
+            "use strict";
+
+            var processScroll = (function () {
+                var curr = null, prev = null;
+                return function (nav) {
+                    var $win = $(window);
+                    $('.subnav').each(function () {
+                        var nav = $(this);
+                        var navTop = $win.width() < 980 ? 0 : nav.offset().top - 40;
+
+                        var scrollTop = $win.scrollTop();
+                        if (scrollTop >= navTop && curr != nav) {
+                            if(curr){
+                                curr.removeClass('subnav-fixed')
+                                prev = curr;
+                            }
+                            curr = nav;
+                            curr.addClass('subnav-fixed')
+                        } else if (curr == nav && scrollTop <= navTop) {
+                            curr.removeClass('subnav-fixed');
+                            prev.addClass('subnav-fixed');
+                            curr = prev;
+                        }else{
+                            nav.removeClass('subnav-fixed');
+                        }
+                    });
+                };
+            })();
+
+            return function () {
+                window.prettyPrint && prettyPrint();
+                $(".collapse").collapse();
+                var $window = $(window);
+                //$(".subnav").affix ();
+                // fix sub nav on scroll
+//                processScroll();
+//                $(window).on('scroll', processScroll)
+            }
+        })();
+    </script>
+</head>
+<body onload="init()">
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"> </span>
+            </a>
+            
+            <a href="./index.html" class="brand">werker</a>
+            
+            <div class="nav-collapse">
+                <ul class="nav">
+                    
+
+                        
+                    
+                </ul>
+                
+                <ul class="nav pull-right">
+
+                    <li class="divider-vertical"></li>
+                    <li><a href="http://github.com/C2FO/werker" target="#github" class="pull-right">github</a></li>
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <a name="top"></a>
+    <div class="container">
+
+
+
+
+  <p><a href="http://travis-ci.org/C2FO/werker"><img src="https://secure.travis-ci.org/C2FO/werker.png" alt="build status"></a>
+
+</p>
+<h1>Werker</h1>
+<p><code>werker</code> is a module that helps in the managing and using of worker processes in node, letting you focus on getting things done.
+
+</p>
+<p><code>werker</code> is useful if you have CPU intensive tasks that block your node process from doing handling other tasks you can easily push it off to a worker process and let <code>werker</code> manage it.
+
+</p>
+<p>Here is a brief screen cast showing <code>werker</code> managing a pool of processes.
+
+</p>
+<iframe src="http://www.screenr.com/embed/mkM7" width="650" height="396" frameborder="0"></iframe>
+
+<p>Notice how once the request stop <code>werker</code> automatically cleans up processes. The code for the screen cast is in the examples directory and at the bottom of this page.
+
+
+</p>
+<h2>Installation</h2>
+<p><code>npm install werker</code>
+
+</p>
+<h2>Usage</h2>
+<h3>Writing a <code>worker</code></h3>
+<p>The <code>werker</code> API has two aspects to it, the <code>worker</code> API and the <code>pool</code> API. In order to create a worker pool lets create a worker!
+
+</p>
+<p><strong><code>worker()</code></strong>
+
+</p>
+<p>The entry point to writing a worker the <code>worker</code> function which returns a worker builder that allows you to define messages that your worker accepts from the parent process.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>var werker = require(&quot;werker&quot;);
+
+var worker = werker.worker();
+
+module.exports = worker;</code></pre>
+<p><strong>Note</strong> Exporting your worker as the module is required.
+
+</p>
+<p><strong><code>worker.method(name, fn, async?)</code></strong>
+
+</p>
+<p>Ok that is the base for all <code>worker</code>s in worker, but right now it doesnt do anything so lets add some handlers to our worker.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.method(&quot;sayHello&quot;, function () {
+return &quot;Hello World!&quot;;
+});</code></pre>
+<p>So in the above scode snippet we added a <code>method</code> to our worker which says whenever the parent process invokes the <code>sayHello</code> method run this function.
+
+</p>
+<p>Well thats great but my code is async! Well we have a solution for that also!
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.method(&quot;sayHelloAsync&quot;, function (cb) {
+process.nextTick(function(){
+    cb(null, &quot;Hello World!&quot;);
+});
+}, true);</code></pre>
+<p>Ok so notice how we passed in true as the last argument to the <code>method</code> method so now a <code>cb</code> is passed in which you call when all processing is done.
+
+</p>
+<p><strong><code>worker.methods(methods, async?)</code></strong>
+
+</p>
+<p>You can also specify a group of methods when creating your worker.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.methods({
+sayHello : function sayHello(){
+    return &quot;Hello World!&quot;;
+},
+
+add : function add(one, two){
+    return one + two;
+}
+};)</code></pre>
+<p>So in the above snippet we define two methods <code>sayHello</code> and <code>add</code>.
+
+</p>
+<p>You can also pass in true as the last argument to make the group of methods async
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.methods({
+sayHelloAsync : function sayHello(cb){
+    process.nextTick(function(){
+        cb(null, &quot;Hello World!&quot;);
+    });
+},
+
+addAsync : function add(one, two, cb){
+    process.nextTick(function(){
+        cb(null, one + two);
+    });
+}
+}, true);</code></pre>
+<p><strong><code>worker.handler(fn, async?)</code></strong>
+
+</p>
+<p>Well I just want a default handler similar to <code>process.on(&quot;message&quot;)</code> ok to do that you can create a default handler that handles all methods that do not match any methods invoked.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.handler(function(message){
+//do something with your message
+});</code></pre>
+<p>Or alternatively the async version.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.handler(function(message, done){
+//do something with your message
+}, true);</code></pre>
+<p>In the above snippets message will be whatever arguments that are passed into the handler, which we will see in the pool.
+
+</p>
+<p><strong><code>worker.tearDown(fn)</code></strong>
+
+</p>
+<p>If you have logic that you need to run before your worker is stopped either by the pool or the stop method you can specify a tear down function to run.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.tearDown(function(){
+console.log(&quot;tear down&quot;);
+});</code></pre>
+<p><strong><code>worker.start()</code></strong>
+
+</p>
+<p>To start your worker (i.e. ensure that it is listening and routing messages) use the <code>start</code> method.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>worker.start(); //now your worker is listening for incoming messages and routing to your messages</code></pre>
+<p><strong><code>worker.stop()</code></strong>
+
+</p>
+<p>To stop your worker from listening to incoming messages use the <code>stop()</code> method.
+
+</p>
+<h3>All Together</h3>
+<pre class='prettyprint linenums lang-js'><code>var werker = require(&quot;werker&quot;);
+
+
+module.exports = werker.worker()
+   .method(&quot;sayHello&quot;, function () {
+       return &quot;Hello World!&quot;;
+   })
+   .method(&quot;add&quot;, function (one, two) {
+       return one + two;
+   })
+   .method(&quot;asyncAdd&quot;,function (one, two, done) {
+       process.nextTick(function () {
+           done(null, one + two);
+       });
+   }, true)
+   .tearDown(function(){
+       console.log(&quot;tear down&quot;);
+   }).start();</code></pre>
+<h3>Creating a Pool</h3>
+<p>Ok so we have created a worker so lets create a pool to use our worker with.
+
+</p>
+<p><strong>werker.pool(pathToWorker)</strong>
+
+</p>
+<p>To create a pool use the <code>werker.pool</code> method.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>var werker = require(&quot;werker&quot;);
+
+var werkers = werker.pool(__dirname + &quot;/myWorker.js&quot;);</code></pre>
+<p><strong><code>pool.ttl(timeToLive)</code></strong>
+
+</p>
+<p>Ok so you setup your pool but you dont want all your workers sitting around forever, so you can specify a <code>ttl</code> on your worker. This will ensure that the pool cleans up any workers that have not been used for the <code>ttl</code> limit.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>werkers.ttl(10000);</code></pre>
+<p>So now our workers will sit around for a max time of <code>10</code> seconds.
+
+</p>
+<p><strong>Note</strong> By default <code>werker    </code> has a <code>ttl</code> of <code>1</code> minute. If you do not want your workers cleanup up set your <code>ttl</code> to <code>-1</code>.
+
+</p>
+<p><strong><code>pool.max(maxNumberOfWorkers)</code></strong>
+
+</p>
+<p>By default <code>werker</code> will allow up to <code>10</code> worker processes if you wish to increase/lower this limit use the <code>max</code> method.
+
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>werkers.max(100); //now I can get up to 100 workers</code></pre>
+<p><strong><code>pool.workerArgs(workerArguments)</code></strong>
+
+</p>
+<p>The <code>werker</code> pool lets specify arguments to pass to the <code>worker</code> process when forking a new one.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>pool.workerArgs([&quot;hello&quot;, &quot;world&quot;]);</code></pre>
+<p>You can access the arguments by using <code>process.argv</code> in the worker.
+
+</p>
+<p><strong><code>pool.workerOptions(options)</code></strong>
+
+</p>
+<p>By defualt the only option set on a <code>worker</code> when forking is the <code>env</code> which is set to the current processes env. You can override this by using the <code>workerOptions</code> method. For more options click <a href="http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options">here</a>.
+
+</p>
+<h3>Getting a worker.</h3>
+<p>This is where <code>werker</code> is different just managing your worker processes manually. <code>werker</code> manages the creation/destryoing of worker processes internally allowing you to focus on the task at hand.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>
+var myWorker = werkers.worker();
+
+myWorker.sayHello(function(err, response){
+console.log(response);
+});
+
+Or use the promise API
+
+myWorker.sayHello().then(function(response){
+console.log(repsonse);
+});</code></pre>
+<p><strong>Notice</strong> how the <code>sayHello</code> method that we defined in the worker is avaiable to use. All actions defined with the <code>werker</code> API are automatically added to the <code>worker</code> that you get from the pool.
+
+
+
+</p>
+<h2>Example</h2>
+<p>So lets create a web server that returns fibonacci numbers.
+
+</p>
+<p>The worker
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>var werker = require(&quot;werker&quot;);
+
+function fibonacci(n) {
+   return n &lt; 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+module.exports = werker.worker()
+   .method(&quot;fibonacci&quot;, fibonacci)
+   .start();</code></pre>
+<p>The server.
+
+</p>
+<pre class='prettyprint linenums lang-js'><code>var http = require(&quot;http&quot;),
+   werker = require(&quot;werker&quot;),
+   url = require(&#39;url&#39;);
+
+var pool = werker.pool(__dirname + &quot;/fibonacciWorker.js&quot;).max(5).ttl(5000);
+
+http.createServer(function (req, res) {
+   var query = url.parse(req.url, true).query;
+   var num = query.number || 40;
+   pool.worker().fibonacci(num, function (err, fib) {
+       if (err) {
+           console.error(err.stack);
+           res.writeHead(500, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
+           res.end(err.stack || err);
+       } else {
+           res.writeHead(200, {&#39;Content-Type&#39;: &#39;text/plain&#39;});
+           res.end(fib + &quot;&quot;);
+       }
+   });
+
+}).listen(3000, &quot;127.0.0.1&quot;);</code></pre>
+<p>The video at the top is a demonstration of this sample code.</p>
+
+
+<hr>
+
+    
+  <h2>Meta</h2>
+<p>Code: <code>git clone git://github.com/C2FO/werker.git</code>
+JsDoc: <a href="http://c2fo.github.com/werker">http://c2fo.github.com/werker</a>
+Website:  <a href="http://c2fo.com">http://c2fo.com</a> - Twitter: <a href="http://twitter.com/c2fo">http://twitter.com/c2fo</a> - 877.465.4045</p>
+
+
+
+
+</div>
+</div>
+<script type="text/javascript" src="./assets/js/jquery.js"></script>
+<script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./assets/js/prettify.js"></script>
+
+</body>
+</html>
+
