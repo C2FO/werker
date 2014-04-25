@@ -184,4 +184,4 @@ it.describe("werker",function (it) {
         it.afterEach(pool.close.bind(pool));
     });
 
-}).as(module).run();
+});
