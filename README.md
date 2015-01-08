@@ -294,6 +294,3 @@ The video at the top is a demonstration of this sample code.
 Code: `git clone git://github.com/C2FO/werker.git`
 JsDoc: <http://c2fo.github.com/werker>
 Website:  <http://c2fo.com> - Twitter: <http://twitter.com/c2fo> - 877.465.4045
-
-
-
