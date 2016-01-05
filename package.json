@@ -13,7 +13,7 @@
     "author": "Doug Martin",
     "license": "MIT",
     "dependencies": {
-        "comb": "git://github.com/C2FO/comb.git#node-5-merge",
+        "comb": "~1.0.0",
         "extender": "0.0.2"
     },
     "devDependencies": {
