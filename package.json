@@ -1,6 +1,6 @@
 {
     "name": "werker",
-    "version": "0.0.6",
+    "version": "1.0.0",
     "description": "A module to provide a pool for workers",
     "main": "index.js",
     "scripts": {
@@ -13,10 +13,13 @@
     "author": "Doug Martin",
     "license": "MIT",
     "dependencies": {
-        "comb": "~0.4.0",
+        "comb": "~1.0.0",
         "extender": "0.0.2"
     },
     "devDependencies": {
-        "it": "~0.2.0"
+        "it": "^1.0.1"
+    },
+    "engines": {
+        "node": ">=4.0.0"
     }
 }

@@ -10,7 +10,12 @@ it.describe("werker",function (it) {
 
     it.describe("pool", function (it) {
 
-        var sends = [], closes = [], creates = [], validates = [], currPid = 0;
+        var sends = [],
+            closes = [],
+            creates = [],
+            validates = [],
+            currPid = 0;
+
         var pool = werker
             .pool(__dirname + "/./workers/worker1.js")
             .createWorker(function (path) {
@@ -97,7 +102,7 @@ it.describe("werker",function (it) {
                     setTimeout(function () {
                         assert.lengthOf(closes, 4);
                         next(null);
-                    }, 1000);
+                    }, 2000);
                 }, next);
         });
 
