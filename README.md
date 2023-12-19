@@ -3,24 +3,23 @@
 
   [![Build Status](https://travis-ci.org/C2FO/werker.png?branch=master)](https://travis-ci.org/C2FO/werker)
 
-#Werker
+# :warning: 
+
+This project is deprecated and no longer accepting contributions 
+
+# Werker
 
 `werker` is a module that helps in the managing and using of worker processes in node, letting you focus on getting things done.
 
 `werker` is useful if you have CPU intensive tasks that block your node process from doing handling other tasks you can easily push it off to a worker process and let `werker` manage it.
 
-[Here](http://screenr.com/mkM7) is a brief screen cast showing `werker` managing a pool of processes.
-
-Notice how once the request stop `werker` automatically cleans up processes. The code for the screen cast is in the examples directory and at the bottom of this page.
-
-
-##Installation
+## Installation
 
 `npm install werker`
 
-##Usage
+## Usage
 
-###Writing a `worker`
+### Writing a `worker`
 
 The `werker` API has two aspects to it, the `worker` API and the `pool` API. In order to create a worker pool lets create a worker!
 
@@ -28,7 +27,7 @@ The `werker` API has two aspects to it, the `worker` API and the `pool` API. In 
 
 The entry point to writing a worker the `worker` function which returns a worker builder that allows you to define messages that your worker accepts from the parent process.
 
-```
+```js
 var werker = require("werker");
 
 var worker = werker.worker();
@@ -43,7 +42,7 @@ module.exports = worker;
 
 Ok that is the base for all `worker`s in worker, but right now it doesnt do anything so lets add some handlers to our worker.
 
-```
+```js
 worker.method("sayHello", function () {
 	return "Hello World!";
 });
@@ -53,7 +52,7 @@ So in the above scode snippet we added a `method` to our worker which says whene
 
 Well thats great but my code is async! Well we have a solution for that also!
 
-```
+```js
 worker.method("sayHelloAsync", function (cb) {
 	process.nextTick(function(){
 		cb(null, "Hello World!");
@@ -67,7 +66,7 @@ Ok so notice how we passed in true as the last argument to the `method` method s
 
 You can also specify a group of methods when creating your worker.
 
-```
+```js
 worker.methods({
 	sayHello : function sayHello(){
 		return "Hello World!";
@@ -83,7 +82,7 @@ So in the above snippet we define two methods `sayHello` and `add`.
 
 You can also pass in true as the last argument to make the group of methods async
 
-```
+```js
 worker.methods({
 	sayHelloAsync : function sayHello(cb){
 		process.nextTick(function(){
@@ -97,27 +96,24 @@ worker.methods({
 		});
 	}
 }, true);
-
 ```
 
 **`worker.handler(fn, async?)`**
 
 Well I just want a default handler similar to `process.on("message")` ok to do that you can create a default handler that handles all methods that do not match any methods invoked.
 
-```
+```js
 worker.handler(function(message){
 	//do something with your message
 });
-
 ```
 
 Or alternatively the async version.
 
-```
+```js
 worker.handler(function(message, done){
 	//do something with your message
 }, true);
-
 ```
 
 In the above snippets message will be whatever arguments that are passed into the handler, which we will see in the pool.
@@ -126,7 +122,7 @@ In the above snippets message will be whatever arguments that are passed into th
 
 If you have logic that you need to run before your worker is stopped either by the pool or the stop method you can specify a tear down function to run.
 
-```
+```js
 worker.tearDown(function(){
 	console.log("tear down");
 });
@@ -137,18 +133,17 @@ worker.tearDown(function(){
 
 To start your worker (i.e. ensure that it is listening and routing messages) use the `start` method.
 
-```
+```js
 worker.start(); //now your worker is listening for incoming messages and routing to your messages
-
 ```
 
 **`worker.stop()`**
 
 To stop your worker from listening to incoming messages use the `stop()` method.
 
-###All Together
+### All Together
 
-```
+```js
 var werker = require("werker");
 
 
@@ -167,10 +162,9 @@ module.exports = werker.worker()
     .tearDown(function(){
         console.log("tear down");
     }).start();
-
 ```
 
-###Creating a Pool
+### Creating a Pool
 
 Ok so we have created a worker so lets create a pool to use our worker with.
 
@@ -178,7 +172,7 @@ Ok so we have created a worker so lets create a pool to use our worker with.
 
 To create a pool use the `werker.pool` method.
 
-```
+```js
 var werker = require("werker");
 
 var werkers = werker.pool(__dirname + "/myWorker.js");
@@ -188,7 +182,7 @@ var werkers = werker.pool(__dirname + "/myWorker.js");
 
 Ok so you setup your pool but you dont want all your workers sitting around forever, so you can specify a `ttl` on your worker. This will ensure that the pool cleans up any workers that have not been used for the `ttl` limit.
 
-```
+```js
 werkers.ttl(10000);
 ```
 
@@ -201,7 +195,7 @@ So now our workers will sit around for a max time of `10` seconds.
 By default `werker` will allow up to `10` worker processes if you wish to increase/lower this limit use the `max` method.
 
 
-```
+```js
 werkers.max(100); //now I can get up to 100 workers
 ```
 
@@ -209,7 +203,7 @@ werkers.max(100); //now I can get up to 100 workers
 
 The `werker` pool lets specify arguments to pass to the `worker` process when forking a new one.
 
-```
+```js
 pool.workerArgs(["hello", "world"]);
 ```
 
@@ -219,12 +213,11 @@ You can access the arguments by using `process.argv` in the worker.
 
 By defualt the only option set on a `worker` when forking is the `env` which is set to the current processes env. You can override this by using the `workerOptions` method. For more options click [here](http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options).
 
-###Getting a worker.
+### Getting a worker.
 
 This is where `werker` is different just managing your worker processes manually. `werker` manages the creation/destryoing of worker processes internally allowing you to focus on the task at hand.
 
-```
-
+```js
 var myWorker = werkers.worker();
 
 myWorker.sayHello(function(err, response){
@@ -243,13 +236,13 @@ myWorker.sayHello().then(function(response){
 
 
 
-##Example
+## Example
 
 So lets create a web server that returns fibonacci numbers.
 
 The worker
 
-```
+```js
 var werker = require("werker");
 
 function fibonacci(n) {
@@ -264,7 +257,7 @@ module.exports = werker.worker()
 
 The server.
 
-```
+```js
 var http = require("http"),
     werker = require("werker"),
     url = require('url');
@@ -287,10 +280,9 @@ http.createServer(function (req, res) {
 
 }).listen(3000, "127.0.0.1");
 ```
-The video at the top is a demonstration of this sample code.
 
-##Meta
+## Meta
 
 Code: `git clone git://github.com/C2FO/werker.git`
-JsDoc: <http://c2fo.github.com/werker>
+JsDoc: <http://c2fo.github.io/werker>
 Website:  <http://c2fo.com> - Twitter: <http://twitter.com/c2fo> - 877.465.4045
